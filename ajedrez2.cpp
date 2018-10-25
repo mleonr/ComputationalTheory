@@ -7,6 +7,8 @@
 
 using namespace std;
 
+typedef vector<string> VecS;
+
 void f(string s,int num);
 string mov_rndom(int n);
 void pieza(string s, int num);
@@ -18,11 +20,16 @@ int tam_archivo(string archivo);
 void agregar_archivo(string line, string archivo);
 void eliminar_contenido(string archivo, int tam);
 
+void obtener_cadenas(VecS &p1, VecS &p2);
+string enArchivo(string nom);
+
 
 int main(){
 
 	int opc,rnd;
 	string c1,c2,s_rnd;
+
+	VecS p1,p2;
 
 	srand(time(NULL));
 
@@ -64,6 +71,13 @@ int main(){
 	}
 
 	seleccion_archivos();
+
+	obtener_cadenas(p1,p2);
+
+	/*for(int i=0;i<3;i++){
+		cout<<p1[i]<<endl;
+		cout<<p2[i]<<endl;
+	}*/
 
 	return 0;
 	
@@ -176,31 +190,31 @@ void pieza(string s, int num){
 			if(s.compare("r")==0){
 				for(int j=0;j<2;j++){
 					line_aux=line;
-					if(j==0) line_aux+=" 2";
-					else line_aux+=" 4";
+					if(j==0) line_aux+="2";
+					else line_aux+="4";
 					
 					agregar_archivo(line_aux,archivo_esc);
 				}
 			}else if(s.compare("b")==0){
 				line_aux=line;
-				line_aux+=" 5";
+				line_aux+="5";
 				agregar_archivo(line_aux,archivo_esc);
 			}
 		}else if(line.back()=='2'){
 			if(s.compare("r")==0){
 				for(int j=0;j<2;j++){
 					line_aux=line;
-					if(j==0) line_aux+=" 4";
-					else line_aux+=" 6";
+					if(j==0) line_aux+="4";
+					else line_aux+="6";
 					
 					agregar_archivo(line_aux,archivo_esc);
 				}
 			}else if(s.compare("b")==0){
 				for(int j=0;j<3;j++){
 					line_aux=line;
-					if(j==0) line_aux+=" 1";
-					else if(j==1) line_aux+=" 3";
-					else if(j==2) line_aux+=" 5";
+					if(j==0) line_aux+="1";
+					else if(j==1) line_aux+="3";
+					else if(j==2) line_aux+="5";
 
 					agregar_archivo(line_aux,archivo_esc);
 				}
@@ -209,14 +223,14 @@ void pieza(string s, int num){
 			if(s.compare("r")==0){
 				for(int j=0;j<2;j++){
 					line_aux=line;
-					if(j==0) line_aux+=" 2";
-					else line_aux+=" 6";
+					if(j==0) line_aux+="2";
+					else line_aux+="6";
 
 					agregar_archivo(line_aux,archivo_esc);
 				}
 			}else if(s.compare("b")==0){
 				line_aux=line;
-				line_aux+=" 5";
+				line_aux+="5";
 
 				agregar_archivo(line_aux,archivo_esc);
 			}
@@ -224,17 +238,17 @@ void pieza(string s, int num){
 			if(s.compare("r")==0){
 				for(int j=0;j<2;j++){
 					line_aux=line;
-					if(j==0) line_aux+=" 2";
-					else if(j==1) line_aux+=" 8";
+					if(j==0) line_aux+="2";
+					else if(j==1) line_aux+="8";
 
 					agregar_archivo(line_aux,archivo_esc);		
 				}
 			}else if(s.compare("b")==0){
 				for(int j=0;j<3;j++){
 					line_aux=line;
-					if(j==0) line_aux+=" 1";
-					else if(j==1) line_aux+=" 5";
-					else if(j==2) line_aux+=" 7";
+					if(j==0) line_aux+="1";
+					else if(j==1) line_aux+="5";
+					else if(j==2) line_aux+="7";
 
 					agregar_archivo(line_aux,archivo_esc);
 				}
@@ -243,20 +257,20 @@ void pieza(string s, int num){
 			if(s.compare("r")==0){
 				for(int j=0;j<4;j++){
 					line_aux=line;
-					if(j==0) line_aux+=" 2";
-					else if(j==1) line_aux+=" 4";
-					else if(j==2) line_aux+=" 6";
-					else if(j==3) line_aux+=" 8";
+					if(j==0) line_aux+="2";
+					else if(j==1) line_aux+="4";
+					else if(j==2) line_aux+="6";
+					else if(j==3) line_aux+="8";
 
 					agregar_archivo(line_aux,archivo_esc);
 				}
 			}else if(s.compare("b")==0){
 				for(int j=0;j<4;j++){
 					line_aux=line;
-					if(j==0) line_aux+=" 1";
-					else if(j==1) line_aux+=" 3";
-					else if(j==2) line_aux+=" 7";
-					else if(j==3) line_aux+=" 9";
+					if(j==0) line_aux+="1";
+					else if(j==1) line_aux+="3";
+					else if(j==2) line_aux+="7";
+					else if(j==3) line_aux+="9";
 
 					agregar_archivo(line_aux,archivo_esc);
 				}
@@ -265,17 +279,17 @@ void pieza(string s, int num){
 			if(s.compare("r")==0){
 				for(int j=0;j<2;j++){
 					line_aux=line;
-					if(j==0) line_aux+=" 2";
-					else line_aux+=" 8";
+					if(j==0) line_aux+="2";
+					else line_aux+="8";
 					
 					agregar_archivo(line_aux,archivo_esc);	
 				}
 			}else if(s.compare("b")==0){
 				for(int j=0;j<3;j++){
 					line_aux=line;
-					if(j==0) line_aux+=" 3";
-					else if(j==1) line_aux+=" 5";
-					else if(j==2) line_aux+=" 9";
+					if(j==0) line_aux+="3";
+					else if(j==1) line_aux+="5";
+					else if(j==2) line_aux+="9";
 
 					agregar_archivo(line_aux,archivo_esc);	
 				}
@@ -284,14 +298,14 @@ void pieza(string s, int num){
 			if(s.compare("r")==0){
 				for(int j=0;j<2;j++){
 					line_aux=line;
-					if(j==0) line_aux+=" 4";
-					else line_aux+=" 8";
+					if(j==0) line_aux+="4";
+					else line_aux+="8";
 
 					agregar_archivo(line_aux,archivo_esc);		
 				}
 			}else if(s.compare("b")==0){
 				line_aux=line;
-				line_aux+=" 5";
+				line_aux+="5";
 				
 				agregar_archivo(line_aux,archivo_esc);					
 			}
@@ -299,17 +313,17 @@ void pieza(string s, int num){
 			if(s.compare("r")==0){
 				for(int j=0;j<2;j++){
 					line_aux=line;
-					if(j==0) line_aux+=" 4";
-					else line_aux+=" 6";
+					if(j==0) line_aux+="4";
+					else line_aux+="6";
 						
 					agregar_archivo(line_aux,archivo_esc);	
 				}
 			}else if(s.compare("b")==0){
 				for(int j=0;j<3;j++){
 					line_aux=line;
-					if(j==0) line_aux+=" 5";
-					else if(j==1) line_aux+=" 7";
-					else if(j==2) line_aux+=" 9";
+					if(j==0) line_aux+="5";
+					else if(j==1) line_aux+="7";
+					else if(j==2) line_aux+="9";
 
 					agregar_archivo(line_aux,archivo_esc);	
 				}
@@ -318,14 +332,14 @@ void pieza(string s, int num){
 			if(s.compare("r")==0){
 				for(int j=0;j<2;j++){
 					line_aux=line;
-					if(j==0) line_aux+=" 6";
-					else line_aux+=" 8";
+					if(j==0) line_aux+="6";
+					else line_aux+="8";
 
 					agregar_archivo(line_aux,archivo_esc);			
 				}
 			}else if(s.compare("b")==0){
 				line_aux=line;
-				line_aux+=" 5";
+				line_aux+="5";
 
 				agregar_archivo(line_aux,archivo_esc);		
 			}	
@@ -359,7 +373,7 @@ void seleccion_archivos(){
 	if_file.open(final1);
 	of_file.open("jganadorasP1.txt");
 	while(getline(if_file,line)){
-		if(line.back()=='9' && line[2]!='2')
+		if(line.back()=='9')
 			of_file<<line<<endl;
 		
 	}
@@ -375,6 +389,47 @@ void seleccion_archivos(){
 	}
 	of_file.close();
 	if_file.close();
+}
+
+void obtener_cadenas(VecS &p1, VecS &p2){
+
+	string aux;
+
+	for(int i=0;i<3;i++){
+		aux=enArchivo("jganadorasP1.txt");
+		if(aux.size()!=0)
+				p1.push_back(aux);
+	}
+
+	for(int i=0;i<3;i++){
+		aux=enArchivo("jganadorasP2.txt");
+		if(aux.size()!=0)
+				p2.push_back(aux);
+	}
+
+}
+
+string enArchivo(string nom){
+
+	int rnd,tam;
+	string line;
+
+	tam=tam_archivo(nom);
+	cout<<tam<<endl;
+	rnd= rand()%tam+1;
+
+	ifstream file;
+	file.open(nom);
+	
+	while(getline(file,line)){
+		rnd--;
+		if(rnd==0){
+			break;
+		}
+	}
+
+	return line;
+
 }
 
 
