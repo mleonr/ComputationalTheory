@@ -4,6 +4,7 @@
 #include<fstream>
 #include<ctime>
 #include<cstdio>
+#include<stdio.h>
 #include<graphics.h>
 
 using namespace std;
@@ -21,8 +22,10 @@ int tam_archivo(string archivo);
 void agregar_archivo(string line, string archivo);
 void eliminar_contenido(string archivo, int tam);
 
-void obtener_cadenas(VecS &p1, VecS &p2);
-string enArchivo(string nom);
+void obtener_cadenasG(VecS &p1, VecS &p2);
+string enArchivoRnd(string archivo,int tam);
+void N_animaciones(VecS &p1, VecS &p2);
+void comparador(string p1,string p2);
 
 void graficos(string p1,string p2);
 void cuadrado(int x0,int y0,int x1,int y1,int x2,int y2, char c);
@@ -76,17 +79,24 @@ int main() {
 	}
 
 	seleccion_archivos();
+	obtener_cadenasG(p1,p2);
+
+	for(int i=0;i<p1.size();i++) cout<<p1[i]<<endl;
+	cout<<".."<<endl;	
+	for(int i=0;i<p2.size();i++) cout<<p2[i]<<endl;
+
+	N_animaciones(p1,p2);	
+
+
+
 	
 
-	/*obtener_cadenas(p1,p2);
+	/*for()
 
-	cout<<p1.size()<<endl;
-	cout<<p2.size()<<endl;
-	for(int i=0;i<3;i++){
-		cout<<p1[i]<<endl;
-		cout<<p2[i]<<endl;
-	}*/
-	graficos("159","268");
+	cout<<p1[1]<<endl;
+	cout<<p2[1]<<endl;
+
+	graficos(p1[1],p2[1]);*/
 	return 0;
 }
 
@@ -370,8 +380,7 @@ void pieza(string s, int num){
 	if(archivo_lec=="pieza1_a.txt") n = remove("pieza1_a.txt");
 	else if(archivo_lec=="pieza1_b.txt") n = remove("pieza1_b.txt");
 	else if(archivo_lec=="pieza2_a.txt") n =remove("pieza2_a.txt");
-	else if(archivo_lec=="pieza2_b.txt") n = remove("pieza2_b.txt");
-    
+	else if(archivo_lec=="pieza2_b.txt") n = remove("pieza2_b.txt");  
 }
 
 void seleccion_archivos(){
@@ -394,9 +403,8 @@ void seleccion_archivos(){
 	if_file.open(archivof1);
 	of_file.open("jganadorasP1.txt");
 	while(getline(if_file,line)){
-		if(line[line.length()-1]=='9')
+		if(line[line.length()-1]=='9' && line[1]!='2')
 			of_file<<line<<endl;
-		
 	}
 	of_file.close();
 	if_file.close();
@@ -417,62 +425,117 @@ void seleccion_archivos(){
 	if_file.close();
 }
 
-void obtener_cadenas(VecS &p1, VecS &p2){
+void obtener_cadenasG(VecS &p1, VecS &p2){
 
+	int tamp1,tamp2;
 	string aux;
-	//for(int i=0;i<3;i++){
-		aux=enArchivo("jganadorasP1.txt");
-		//cout<<"1: "<<aux<<endl;
-		/*if(aux.size()!=0){
-			cout<<"nosd"<<endl;
-			p1.push_back(aux);			
-		}*/
-	//}
 
+	tamp1=tam_archivo("jganadorasP1.txt");
+	tamp2=tam_archivo("jganadorasP2.txt");
 
-	//for(int i=0;i<3;i++){
-		aux=enArchivo("jganadorasP2.txt");
-		//if(aux.size()!=0)
-		//		p2.push_back(aux);
-	//}
-
+	if((tamp1==0) && (tamp2==0)){
+		cout<<"Ninguna de las dos piezas tiene jugadas ganadoras"<<endl;
+		exit(0);
+	}else if(tamp1==0){
+		cout<<"La pieza 1 no tiene jugadas ganadoras"<<endl;
+		exit(0);
+	}else if(tamp2==0){
+		cout<<"La pieza 2 no tiene jugadas ganadoras"<<endl;
+		exit(0);
+	}else{
+		//Para la pieza 1
+		for(int i=0;i<tamp1;i++){
+			aux = enArchivoRnd("jganadorasP1.txt",tamp1);
+			p1.push_back(aux);
+			if(i==2)break;
+		}
+		//Para la pieza 2
+		for(int j=0;j<tamp2;j++){
+			aux = enArchivoRnd("jganadorasP2.txt",tamp2);
+			p2.push_back(aux);
+			if(j==2)break;
+		}
+	}
 }
 
-string enArchivo(string nom){
+string enArchivoRnd(string archivo,int tam){
 
-	int rnd,tam;
+	int rnd=0;
 	string line="";
-/*
-	tam=tam_archivo(nom);
-
-	cout<<"tam_archivo "<<tam<<endl;
-
-	cout<<tam;
-
-	if(tam!=0){
-		cout<<"rnd: "<<rnd<<endl;
-		rnd= rand()%tam+1;
-
-		ifstream file;
-		file.open(nom);
+	ifstream file;
 	
-		while(getline(file,line)){
-			rnd--;
-			if(rnd==0){
-				break;
-			}
-		}
+	rnd = rand()%tam+1;
 
-	}*/
+	char * a = new char [archivo.length()+1];
+	strcpy (a,archivo.c_str());
+
+	file.open(a);
+	
+	while(getline(file,line)){
+		rnd--;
+		if(rnd==0) break;
+	}
 
 	return line;
+}
+
+void N_animaciones(VecS &p1, VecS &p2){
+	int j_1,j_2;
+
+	j_1=p1.size();
+	j_2=p2.size();
+
+	if(j_1<j_2){
+		for(int i=0;i<j_1;i++){
+
+		}
+	}else if(j_2<j_1){
+		for(int i=0;i<j_2;i++){
+
+		}
+	}else{
+		
+		for(int i=0;i<j_1;i++){
+			cout<<"holi"<<endl;
+			comparador(p1[i],p2[i]);
+		}
+	}
+}
+
+void comparador(string p1,string p2){
+
+	bool ban=true;
+
+	if(p1.size()==p2.size()){
+		for(int i=0;i<p1.size();i++){
+			if(p1[i]==p2[i]){
+				ban=false;
+				cout<<"coincidencia"<<endl;	
+				break;
+			}else if(i!=0){
+				if(p1[i]==p2[i-1]){
+					ban=false;
+					cout<<"coincidencia"<<endl;
+					break;
+				}
+			}
+			
+		}
+		if(ban){
+			graficos(p1,p2);
+			cout<<"adios"<<endl;
+		}
+	}
 
 }
+
 //630,466
 void graficos(string g,string p){
 	
 	int gd= DETECT,gm,c1=1,c2=1;
 	int h1x,h1y,h2x,h2y;
+	string aux;
+
 	string text = "CADENA GANADORA: "+g;
 	
 	initgraph(&gd,&gm,"");
