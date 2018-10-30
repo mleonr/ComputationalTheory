@@ -26,11 +26,14 @@ void obtener_cadenasG(VecS &p1, VecS &p2);
 string enArchivoRnd(string archivo,int tam);
 void N_animaciones(VecS &p1, VecS &p2);
 void comparador(string p1,string p2);
+string buscarenArchivo(string cadena,string archivo);
 
 void graficos(string p1,string p2);
 void cuadrado(int x0,int y0,int x1,int y1,int x2,int y2, char c);
 void tablero();
 void titulo(int x0,int y0,int x1,int y1,int x2,int y2,char c,string titulo);
+
+int scont;
 
 int main() {
 	
@@ -64,14 +67,18 @@ int main() {
 			
 		break;
 		case 2:
-			cout<<"Camino pieza 1: "<<endl;
-			cin>>c1;
+
+			while(true){
+				cout<<"Camino pieza 1: "<<endl;
+				cin>>c1;
+				cout<<"Camino pieza 2: "<<endl;
+				cin>>c2;
+				if(c1.size()==c2.size()) break;
+				else cout<<"Ambas cadenas deben tener la misma longitud"<<endl;
+			}
 			f(c1,1);
-
-
-			cout<<"Camino pieza 2: "<<endl;
-			cin>>c2;
 			f(c2,2);
+
 		break;
 		default:
 			cout<<"Opcion no valida"<<endl;
@@ -80,7 +87,7 @@ int main() {
 
 	seleccion_archivos();
 	obtener_cadenasG(p1,p2);
-
+	cout<<endl;
 	for(int i=0;i<p1.size();i++) cout<<p1[i]<<endl;
 	cout<<".."<<endl;	
 	for(int i=0;i<p2.size();i++) cout<<p2[i]<<endl;
@@ -443,18 +450,25 @@ void obtener_cadenasG(VecS &p1, VecS &p2){
 		cout<<"La pieza 2 no tiene jugadas ganadoras"<<endl;
 		exit(0);
 	}else{
+		int cont1=0,cont2=0;
 		//Para la pieza 1
 		for(int i=0;i<tamp1;i++){
 			aux = enArchivoRnd("jganadorasP1.txt",tamp1);
 			p1.push_back(aux);
+			cont1++;
 			if(i==2)break;
 		}
+		if(cont1==1)cout<<"\nLa pieza1 junto 1 jugada random"<<endl;
+		else cout<<"\nLa pieza1 junto "<<cont1<<" jugadas random"<<endl;
 		//Para la pieza 2
 		for(int j=0;j<tamp2;j++){
 			aux = enArchivoRnd("jganadorasP2.txt",tamp2);
 			p2.push_back(aux);
+			cont2++;
 			if(j==2)break;
 		}
+		if(cont2==1)cout<<"\nLa pieza2 junto 1 jugada random"<<endl;
+		else cout<<"\nLa pieza2 junto "<<cont2<<" jugadas random"<<endl;
 	}
 }
 
@@ -487,46 +501,87 @@ void N_animaciones(VecS &p1, VecS &p2){
 
 	if(j_1<j_2){
 		for(int i=0;i<j_1;i++){
-
+			comparador(p1[i],p2[i]);
 		}
 	}else if(j_2<j_1){
 		for(int i=0;i<j_2;i++){
-
+			comparador(p1[i],p2[i]);
 		}
 	}else{
-		
 		for(int i=0;i<j_1;i++){
-			cout<<"holi"<<endl;
 			comparador(p1[i],p2[i]);
 		}
 	}
 }
 
+
 void comparador(string p1,string p2){
 
+	int i=-1;
 	bool ban=true;
-
-	if(p1.size()==p2.size()){
-		for(int i=0;i<p1.size();i++){
-			if(p1[i]==p2[i]){
+	string aux;
+	while(p1[++i]){
+		if(p1[i]==p2[i]){
+			ban=false;
+			break;
+		}else if(i>0){
+			if(p1[i]==p2[i-1]){
 				ban=false;
-				cout<<"coincidencia"<<endl;	
 				break;
-			}else if(i!=0){
-				if(p1[i]==p2[i-1]){
-					ban=false;
-					cout<<"coincidencia"<<endl;
-					break;
-				}
 			}
-			
-		}
-		if(ban){
-			graficos(p1,p2);
-			cout<<"adios"<<endl;
 		}
 	}
 
+	cout<<"\nANIMACION: "<<++scont<<endl;
+	if(ban){ 
+		cout<<"Cadenas animadas:"<<endl;
+		cout<<"P1: "<<p1<<endl;
+		cout<<"P2: "<<p2<<endl;
+		graficos(p1,p2);	
+		
+	}else{
+		aux=buscarenArchivo(p2,"jganadorasP1.txt");
+		if(aux.empty()) cout<<"Todas las cadenas de la pieza 1 chocan con la de la pieza 2"<<endl;
+		else {
+			cout<<"Cadenas animadas:"<<endl;
+			cout<<"Cadena alterna P1: "<<aux<<endl;
+			cout<<"P2: "<<p2<<endl;
+			graficos(aux,p2); 
+		
+		}
+	}  
+	
+
+}
+
+
+string buscarenArchivo(string cadena,string archivo){
+	string line="";
+	ifstream file;
+
+	char * a = new char [archivo.length()+1];
+	strcpy (a,archivo.c_str());
+
+	file.open(a);
+	
+	while(getline(file,line)){
+		bool ban=true;
+		int i=-1;
+		while(line[++i]){
+			if(line[i]==cadena[i]){
+				ban=false;
+				break;
+			}else if(i>0){
+				if(line[i]==cadena[i-1]){
+					ban=false;
+					break;
+				}
+			}
+		}
+		if(ban) return line;
+	}
+
+	return line;
 }
 
 //630,466
@@ -543,7 +598,7 @@ void graficos(string g,string p){
 	h1x=195;
 	h1y=50;
 	h2x=315;
-	h2y=50;
+	h2y=50;	
 	
 	tablero();
 	//Piezas iniciales
